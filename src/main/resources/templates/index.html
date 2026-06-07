@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"> 
 <head>
     <meta charset="UTF-8">
     <title>校園二手書拍賣平台</title>
 </head>
 <body>
     <h1>歡迎來到校園二手書拍賣平台！</h1>
-    <p>這是博鈞負責的前端首頁測試畫面。</p>
+
+    <h2>新增二手書</h2>
+    <form action="/addBook" method="post">
+        <label>書名：</label>
+        <input type="text" name="title" required><br><br>
+
+        <label>價格：</label>
+        <input type="number" name="price" required><br><br>
+
+        <label>作者：</label>
+        <input type="text" name="author" required><br><br>
+
+        <button type="submit">上架賣書</button>
+    </form>
+
+    <hr> <h2>目前架上的二手書</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>編號</th>
+                <th>書名</th>
+                <th>價格</th>
+                <th>作者</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}">1</td>
+                <td th:text="${book.title}">測試書名</td>
+                <td th:text="${book.price}">100</td>
+                <td th:text="${book.author}">測試作者</td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 </html>
