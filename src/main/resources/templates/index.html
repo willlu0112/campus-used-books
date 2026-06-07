@@ -37,6 +37,16 @@
                 <td th:text="${book.title}">測試書名</td>
                 <td th:text="${book.price}">100</td>
                 <td th:text="${book.author}">測試作者</td>
+                <td>
+                    <form action="/editBook" method="get" style="display: inline;">
+                        <input type="hidden" name="id" th:value="${book.id}">
+                        <button type="submit">編輯修改</button>
+                    </form>
+                    <form action="/deleteBook" method="post">
+                        <input type="hidden" name="id" th:value="${book.id}">
+                        <button type="submit">下架刪除</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
