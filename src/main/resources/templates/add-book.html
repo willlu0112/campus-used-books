@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>上架新書籍</title>
+</head>
+
+<body>
+    <h1>填寫二手書資訊</h1>
+
+    <form action="/addBook" method="post">
+        <label>書名：</label>
+        <input type="text" name="title" required><br><br>
+
+        <label>價格：</label>
+        <input type="number" name="price" required><br><br>
+
+        <label>作者：</label>
+        <input type="text" name="author" required><br><br>
+
+        <button type="submit" style="padding: 5px 15px;">確認上架</button>
+    </form>
+
+    <br>
+    <a href="/">返回首頁</a>
+</body>
+
+</html>

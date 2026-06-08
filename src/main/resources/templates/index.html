@@ -1,34 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"> 
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
-    <title>校園二手書拍賣平台</title>
+    <title>校園二手書拍賣平台 - 主頁</title>
 </head>
+
 <body>
     <h1>歡迎來到校園二手書拍賣平台！</h1>
 
-    <h2>新增二手書</h2>
-    <form action="/addBook" method="post">
-        <label>書名：</label>
-        <input type="text" name="title" required><br><br>
+    <div style="background-color: #f1f1f1; padding: 10px; margin-bottom: 20px;">
+        <div sec:authorize="isAnonymous()">
+            <span>您目前是訪客狀態：</span>
+            <a href="/login-page"><button type="button">會員登入</button></a>
+            <a href="/register-page"><button type="button">註冊新帳號</button></a>
+        </div>
 
-        <label>價格：</label>
-        <input type="number" name="price" required><br><br>
+        <div sec:authorize="isAuthenticated()">
+            <span>歡迎回來，會員：<strong sec:authentication="name" style="color: blue;">用戶名</strong> ！</span>
+            <form action="/logout" method="post" style="display: inline;">
+                <button type="submit"
+                    style="background-color: #f44336; color: white; border: none; padding: 5px 10px; cursor: pointer;">安全登出</button>
+            </form>
+        </div>
+    </div>
 
-        <label>作者：</label>
-        <input type="text" name="author" required><br><br>
+    <a href="/add-page">
+        <button type="button"
+            style="padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+            ➕ 點我上架新二手書
+        </button>
+    </a>
 
-        <button type="submit">上架賣書</button>
-    </form>
+    <br><br>
+    <hr>
 
-    <hr> <h2>目前架上的二手書</h2>
-    <table border="1">
+    <h2>目前架上的二手書</h2>
+    <table border="1" cellpadding="10">
         <thead>
             <tr>
                 <th>編號</th>
                 <th>書名</th>
                 <th>價格</th>
                 <th>作者</th>
+                <th>功能操作</th>
             </tr>
         </thead>
         <tbody>
@@ -42,14 +57,14 @@
                         <input type="hidden" name="id" th:value="${book.id}">
                         <button type="submit">編輯修改</button>
                     </form>
-                    <form action="/deleteBook" method="post">
+                    <form action="/deleteBook" method="post" style="display: inline;">
                         <input type="hidden" name="id" th:value="${book.id}">
-                        <button type="submit">下架刪除</button>
+                        <button type="submit" style="color: red;">下架刪除</button>
                     </form>
                 </td>
             </tr>
         </tbody>
     </table>
-
 </body>
+
 </html>

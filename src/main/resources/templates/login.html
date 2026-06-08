@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>會員登入</title>
+</head>
+
+<body>
+    <h1>會員登入</h1>
+
+    <div th:if="${param.error}" style="color: red; margin-bottom: 10px;">
+        ❌ 帳號或密碼錯誤，請再試一次！
+    </div>
+
+    <form action="/login" method="post">
+        <label>帳號：</label>
+        <input type="text" name="username" required><br><br>
+
+        <label>密碼：</label>
+        <input type="password" name="password" required><br><br>
+
+        <button type="submit"
+            style="padding: 5px 15px; background-color: #2196F3; color: white; border: none; cursor: pointer;">確認登入</button>
+
+        <a href="/register-page" style="margin-left: 10px;">
+            <button type="button">註冊新帳號</button>
+        </a>
+    </form>
+
+    <br><br>
+    <hr>
+    <a href="/">⬅️ 返回網站主頁</a>
+</body>
+
+</html>

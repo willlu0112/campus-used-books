@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>註冊新會員</title>
+</head>
+
+<body>
+    <h1>註冊新帳號</h1>
+
+    <form action="/register" method="post">
+        <label>請輸入帳號：</label>
+        <input type="text" name="username" required><br><br>
+
+        <label>請輸入密碼：</label>
+        <input type="password" name="password" required><br><br>
+
+        <button type="submit"
+            style="padding: 5px 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">完成註冊</button>
+    </form>
+
+    <br><br>
+    <hr>
+    <a href="/">⬅️ 返回網站主頁</a>
+</body>
+
+</html>
