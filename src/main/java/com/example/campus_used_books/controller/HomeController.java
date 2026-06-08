@@ -108,4 +108,38 @@ public class HomeController {
         }
         return "redirect:/";
     }
+
+    @GetMapping("/search")
+    public String searchBooks(
+            @RequestParam String type,
+            @RequestParam String keyword,
+            Model model) {
+
+        // 建立一個 List 用來裝等一下搜尋出來的書
+        java.util.List<Book> searchResults;
+
+        // 根據前端傳過來的 type 決定要用哪一種搜尋
+        switch (type) {
+            case "title":
+                searchResults = bookRepository.findByTitleContainingIgnoreCase(keyword);
+                break;
+            case "course":
+                searchResults = bookRepository.findByCourseNameContainingIgnoreCase(keyword);
+                break;
+            case "professor":
+                searchResults = bookRepository.findByProfessorContainingIgnoreCase(keyword);
+                break;
+            default:
+                // 如果防呆防到未知的 type，就預設撈全部
+                searchResults = bookRepository.findAll();
+                break;
+        }
+
+        // 把搜尋結果和當初搜的關鍵字打包，丟給新網頁 search-results.html
+        model.addAttribute("books", searchResults);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("searchType", type);
+
+        return "search-results"; // 導向新建立的搜尋結果頁
+    }
 }

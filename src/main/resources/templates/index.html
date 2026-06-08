@@ -35,6 +35,26 @@
     <br><br>
     <hr>
 
+    <div style="background-color: #e6f7ff; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+        <h3>🔍 快速搜尋二手書</h3>
+        <form action="/search" method="get">
+            <label>搜尋類型：</label>
+            <select name="type" style="padding: 5px; font-size: 14px;">
+                <option value="title">依【書名】搜尋</option>
+                <option value="course">依【課程名稱】搜尋</option>
+                <option value="professor">依【指導教授】搜尋</option>
+            </select>
+
+            <input type="text" name="keyword" placeholder="請輸入關鍵字..." required
+                style="padding: 5px; width: 250px; font-size: 14px; margin-left: 10px;">
+
+            <button type="submit"
+                style="padding: 5px 15px; background-color: #1890ff; color: white; border: none; cursor: pointer; margin-left: 10px;">
+                開始搜尋
+            </button>
+        </form>
+    </div>
+
     <h2>目前架上的二手書</h2>
     <table border="1" cellpadding="10">
         <thead>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>搜尋結果 - 校園二手書拍賣平台</title>
+</head>
+
+<body>
+    <h1>🔍 二手書搜尋結果</h1>
+
+    <p>您剛才搜尋的關鍵字是：<strong th:text="${keyword}" style="color: red;">關鍵字</strong></p>
+
+    <div th:if="${#lists.isEmpty(books)}"
+        style="background-color: #fff2e8; padding: 15px; border: 1px solid #ffbb96; margin-bottom: 20px;">
+        抱歉！目前架上沒有符合此條件的二手書，您可以換個關鍵字再試試看。
+    </div>
+
+    <table border="1" cellpadding="10" th:if="${not #lists.isEmpty(books)}">
+        <thead>
+            <tr>
+                <th>編號</th>
+                <th>書名</th>
+                <th>價格</th>
+                <th>作者</th>
+                <th>對應課程</th>
+                <th>指導教授</th>
+                <th>上架者</th>
+                <th>功能操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.id}">1</td>
+                <td th:text="${book.title}">測試書名</td>
+                <td th:text="${book.price}">100</td>
+                <td th:text="${book.author}">測試作者</td>
+                <td th:text="${book.courseName}">測試課程</td>
+                <td th:text="${book.professor}">測試教授</td>
+                <td th:text="${book.ownerUsername != null ? book.ownerUsername : '訪客上架'}">上架者</td>
+                <td>
+                    <form action="/editBook" method="get" style="display: inline;"
+                        th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
+                        <input type="hidden" name="id" th:value="${book.id}">
+                        <button type="submit">編輯修改</button>
+                    </form>
+
+                    <form action="/deleteBook" method="post" style="display: inline;"
+                        th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
+                        <input type="hidden" name="id" th:value="${book.id}">
+                        <button type="submit" style="color: red;">下架刪除</button>
+                    </form>
+
+                    <span th:if="${#authentication.name != book.ownerUsername}">無權限操作</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <hr>
+    <a href="/"><button type="button" style="padding: 8px 15px; cursor: pointer;">⬅️ 返回網站主頁</button></a>
+</body>
+
+</html>
