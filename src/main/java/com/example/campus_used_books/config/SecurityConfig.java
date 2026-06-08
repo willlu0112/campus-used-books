@@ -21,9 +21,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // 💡 主頁(/)、資料庫後台、註冊相關頁面、登入頁面通通開放，不需登入就能看
-                        .requestMatchers("/", "/h2-console/**", "/login-page", "/register-page", "/register")
+                        // 🌟 修正重點：在這裡加上了 "/css/**", "/js/**", "/images/**", "/uploads/**"
+                        // 確保未登入的使用者瀏覽首頁時，瀏覽器可以正常讀取圖片、樣式表與腳本，不會再顯示破圖！
+                        .requestMatchers(
+                                "/",
+                                "/h2-console/**",
+                                "/login-page",
+                                "/register-page",
+                                "/register",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/uploads/**")
                         .permitAll()
+
                         // 💡 剩餘的所有功能（例如：點擊上架賣書、編輯、刪除）通通必須登入才能操作！
                         .anyRequest().authenticated())
                 .formLogin(login -> login
