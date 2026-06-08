@@ -43,6 +43,8 @@
                 <th>書名</th>
                 <th>價格</th>
                 <th>作者</th>
+                <th>對應課程</th>
+                <th>指導教授</th>
                 <th>功能操作</th>
             </tr>
         </thead>
@@ -52,12 +54,17 @@
                 <td th:text="${book.title}">測試書名</td>
                 <td th:text="${book.price}">100</td>
                 <td th:text="${book.author}">測試作者</td>
+                <td th:text="${book.courseName}">測試課程</td>
+                <td th:text="${book.professor}">測試教授</td>
                 <td>
-                    <form action="/editBook" method="get" style="display: inline;">
+                    <form action="/editBook" method="get" style="display: inline;"
+                        th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
                         <input type="hidden" name="id" th:value="${book.id}">
                         <button type="submit">編輯修改</button>
                     </form>
-                    <form action="/deleteBook" method="post" style="display: inline;">
+
+                    <form action="/deleteBook" method="post" style="display: inline;"
+                        th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
                         <input type="hidden" name="id" th:value="${book.id}">
                         <button type="submit" style="color: red;">下架刪除</button>
                     </form>

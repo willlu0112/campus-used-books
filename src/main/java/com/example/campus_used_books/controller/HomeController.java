@@ -37,9 +37,13 @@ public class HomeController {
         return "add-book";
     }
 
-    // 3. 處理新增書籍表單
+    // 💡 修改 3：處理新增書籍表單（自動綁定目前登入的人為擁有者）
     @PostMapping("/addBook")
-    public String addBook(Book book) {
+    public String addBook(Book book, java.security.Principal principal) {
+        // principal.getName() 可以直接抓到目前登入的使用者帳號 (例如 "apple")
+        if (principal != null) {
+            book.setOwnerUsername(principal.getName());
+        }
         bookRepository.save(book);
         return "redirect:/";
     }
@@ -75,16 +79,33 @@ public class HomeController {
         return "redirect:/";
     }
 
+    // 💡 修改 7-1：前往編輯頁面（後端嚴格防守攔截）
     @GetMapping("/editBook")
-    public String editBook(@RequestParam Long id, Model model) {
+    public String editBook(@RequestParam Long id, Model model, java.security.Principal principal) {
         Book book = bookRepository.findById(id).get();
+
+        // 🌟 核心防守邏輯：比對目前登入者 與 書本擁有者
+        if (principal == null || !book.getOwnerUsername().equals(principal.getName())) {
+            // 如果沒登入，或是登入的人不是上架者，直接不給看，退回首頁！
+            return "redirect:/";
+        }
+
         model.addAttribute("book", book);
         return "edit";
     }
 
+    // 💡 修改 7-2：處理更新書籍（確保即便是發送 POST，也只有本人能改）
     @PostMapping("/updateBook")
-    public String updateBook(Book book) {
-        bookRepository.save(book);
+    public String updateBook(Book book, java.security.Principal principal) {
+        // 先從資料庫撈出這本書原本的樣子，確認擁有者是誰
+        Book originalBook = bookRepository.findById(book.getId()).get();
+
+        if (principal != null && originalBook.getOwnerUsername().equals(principal.getName())) {
+            // 只有本人才可以把修改後的資料存進去
+            // 因為前端表單可能沒傳擁有者欄位，我們要幫它把原本的擁有者塞回去，避免變空值
+            book.setOwnerUsername(originalBook.getOwnerUsername());
+            bookRepository.save(book);
+        }
         return "redirect:/";
     }
 }

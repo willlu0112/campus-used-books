@@ -5,32 +5,81 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity // 🌟 這個標記非常重要！它會告訴系統：「請幫我把這個 Java 類別變成資料庫裡的一張表」
+@Entity
 public class Book {
 
-    @Id // 標記這是主鍵 (Primary Key)
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 讓 ID 自動從 1 遞增 (1, 2, 3...)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;   // 書名
-    private Integer price;  // 價格
-    private String author;  // 作者
+    private String title; // 書名
+    private Integer price; // 價格
+    private String author; // 作者
+    private String courseName; // 🌟 新增：對應課程
+    private String professor; // 🌟 新增：指導教授
+    private String ownerUsername; // 🌟 新增：這本書的上架者帳號名稱
 
-    // --- 下面是基礎的 Getters 和 Setters (讓系統能讀取和修改資料) ---
-    
+    // --- 下面是基礎的 Getters 和 Setters ---
+
     public Book() {
         // JPA 規定必須要有一個空的建構子
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Integer getPrice() { return price; }
-    public void setPrice(Integer price) { this.price = price; }
+    public String getTitle() {
+        return title;
+    }
 
-    public String getAuthor() { return author; }
-    public void setAuthor(String author) { this.author = author; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    // 🌟 新增 courseName 的 Getter / Setter
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    // 🌟 新增 professor 的 Getter / Setter
+    public String getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(String professor) {
+        this.professor = professor;
+    }
+
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
+    }
 }
