@@ -37,13 +37,54 @@ public class HomeController {
         return "add-book";
     }
 
-    // 💡 修改 3：處理新增書籍表單（自動綁定目前登入的人為擁有者）
+    // 💡 修改：處理新增書籍表單（支援圖片上傳）
     @PostMapping("/addBook")
-    public String addBook(Book book, java.security.Principal principal) {
-        // principal.getName() 可以直接抓到目前登入的使用者帳號 (例如 "apple")
+    public String addBook(
+            Book book,
+            @RequestParam("imageFile") org.springframework.web.multipart.MultipartFile imageFile,
+            java.security.Principal principal) {
+
+        // 1. 自動綁定上架者
         if (principal != null) {
             book.setOwnerUsername(principal.getName());
         }
+
+        // 🌟 2. 處理圖片上傳邏輯
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                // 決定要把圖片存到專案裡的哪個實際路徑 (存放在 static/uploads 資料夾)
+                String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
+
+                // 防呆：如果 uploads 資料夾不存在，自動建立它
+                java.io.File dir = new java.io.File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                // 為了防止不同使用者上傳「相同檔名」的圖片導致覆蓋 (例如大家都傳 cover.png)
+                // 我們用時間戳記幫圖片重新命名 (例如：1717830000_book.png)
+                String originalFilename = imageFile.getOriginalFilename();
+                String fileName = System.currentTimeMillis() + "_" + originalFilename;
+
+                // 實體檔案寫入電腦硬碟中
+                java.nio.file.Path filePath = java.nio.file.Paths.get(uploadDir + fileName);
+                java.nio.file.Files.copy(imageFile.getInputStream(), filePath,
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+                // 把這個「獨一無二的檔名」存進 Book 物件，準備寫入資料庫
+                book.setCoverImage(fileName);
+
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+                // 如果上傳出錯，可以給一個預設圖片檔名
+                book.setCoverImage("default.png");
+            }
+        } else {
+            // 如果使用者沒傳圖片，給一張預設圖
+            book.setCoverImage("default.png");
+        }
+
+        // 3. 存入 H2 資料庫
         bookRepository.save(book);
         return "redirect:/";
     }

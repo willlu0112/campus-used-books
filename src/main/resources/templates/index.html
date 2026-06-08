@@ -60,6 +60,7 @@
         <thead>
             <tr>
                 <th>編號</th>
+                <th>書本封面</th>
                 <th>書名</th>
                 <th>價格</th>
                 <th>作者</th>
@@ -71,6 +72,12 @@
         <tbody>
             <tr th:each="book : ${books}">
                 <td th:text="${book.id}">1</td>
+
+                <td>
+                    <img th:src="@{'/uploads/' + ${book.coverImage}}" alt="書本封面"
+                        style="width: 80px; height: auto; border-radius: 4px; box-shadow: 1px 1px 5px rgba(0,0,0,0.1);">
+                </td>
+
                 <td th:text="${book.title}">測試書名</td>
                 <td th:text="${book.price}">100</td>
                 <td th:text="${book.author}">測試作者</td>

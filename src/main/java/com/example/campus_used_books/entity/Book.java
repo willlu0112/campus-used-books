@@ -82,4 +82,15 @@ public class Book {
     public void setOwnerUsername(String ownerUsername) {
         this.ownerUsername = ownerUsername;
     }
+
+    private String coverImage; // 🌟 新增：儲存書本封面的圖片檔名
+
+    // 🌟 新增 coverImage 的 Getter / Setter
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
 }

@@ -13,6 +13,14 @@
 
         <input type="hidden" name="id" th:value="${book.id}">
 
+        <input type="hidden" name="coverImage" th:value="${book.coverImage}">
+
+        <div style="margin-bottom: 20px;">
+            <label>目前封面預覽：</label><br>
+            <img th:src="@{'/uploads/' + ${book.coverImage}}" alt="目前封面"
+                style="width: 120px; height: auto; border-radius: 4px; margin-top: 5px; box-shadow: 1px 1px 5px rgba(0,0,0,0.1);">
+        </div>
+
         <label>書名：</label>
         <input type="text" name="title" th:value="${book.title}" required><br><br>
 

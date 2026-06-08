@@ -7,9 +7,9 @@
 </head>
 
 <body>
-    <h1>填寫二手書資訊</h1>
+    <h1>填寫二手書資訊（含封面）</h1>
 
-    <form action="/addBook" method="post">
+    <form action="/addBook" method="post" enctype="multipart/form-data">
         <label>書名：</label>
         <input type="text" name="title" required><br><br>
 
@@ -20,10 +20,13 @@
         <input type="text" name="author" required><br><br>
 
         <label>對應課程：</label>
-        <input type="text" name="courseName" placeholder="例如：計算機概論" required><br><br>
+        <input type="text" name="courseName" required><br><br>
 
         <label>指導教授：</label>
-        <input type="text" name="professor" placeholder="例如：張教授" required><br><br>
+        <input type="text" name="professor" required><br><br>
+
+        <label>上架書本封面：</label>
+        <input type="file" name="imageFile" accept="image/*" required><br><br>
 
         <button type="submit" style="padding: 5px 15px;">確認上架</button>
     </form>
