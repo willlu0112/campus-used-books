@@ -32,6 +32,20 @@
         </button>
     </a>
 
+    <a href="/cart">
+        <button type="button"
+            style="padding: 10px 20px; font-size: 16px; background-color: #ff9800; color: white; border: none; cursor: pointer; margin-left: 10px;">
+            🛒 查看我的購物車
+        </button>
+    </a>
+
+    <a href="/orders">
+    <button type="button"
+        style="padding: 10px 20px; font-size: 16px; background-color: #1890ff; color: white; border: none; cursor: pointer; margin-left: 10px;">
+        📦 查詢我的訂單
+    </button>
+    </a>
+
     <br><br>
     <hr>
 
@@ -84,6 +98,11 @@
                 <td th:text="${book.courseName}">測試課程</td>
                 <td th:text="${book.professor}">測試教授</td>
                 <td>
+                    <form th:action="@{/cart/add}" method="post" style="display: inline;">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <button type="submit" style="background-color: #ff9800; color: white; border: none; padding: 3px 8px; cursor: pointer; border-radius: 3px;">🛒 加入購物車</button>
+                    </form>
+
                     <form action="/editBook" method="get" style="display: inline;"
                         th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
                         <input type="hidden" name="id" th:value="${book.id}">

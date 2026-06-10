@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>搜尋結果 - 校園二手書拍める平台</title>
+    <title>搜尋結果 - 校園二手書拍賣平台</title>
 </head>
 
 <body>
@@ -46,6 +46,11 @@
                 <td th:text="${book.professor}">測試教授</td>
                 <td th:text="${book.ownerUsername != null ? book.ownerUsername : '訪客上架'}">上架者</td>
                 <td>
+                    <form th:action="@{/cart/add}" method="post" style="display: inline;">
+                        <input type="hidden" name="bookId" th:value="${book.id}">
+                        <button type="submit" style="background-color: #ff9800; color: white; border: none; padding: 3px 8px; cursor: pointer; border-radius: 3px;">🛒 加入購物車</button>
+                    </form>
+
                     <form action="/editBook" method="get" style="display: inline;"
                         th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
                         <input type="hidden" name="id" th:value="${book.id}">
@@ -58,7 +63,7 @@
                         <button type="submit" style="color: red;">下架刪除</button>
                     </form>
 
-                    <span th:if="${#authentication.name != book.ownerUsername}">無權限操作</span>
+                    <span th:if="${#authentication.name != book.ownerUsername}" style="color: gray; font-size: 12px; margin-left: 5px;">(非您的商品)</span>
                 </td>
             </tr>
         </tbody>

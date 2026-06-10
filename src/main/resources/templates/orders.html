@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我的訂單紀錄</title>
+</head>
+<body>
+    <h1>📦 我的歷史訂單</h1>
+    <a th:href="@{/}">回到首頁</a>
+    <br><br>
+
+    <div th:if="${#lists.isEmpty(orders)}">
+        <p>目前沒有任何訂單紀錄。</p>
+    </div>
+
+    <div th:each="order : ${orders}" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+        <h3>訂單編號：<span th:text="${order.id}"></span></h3>
+        <p>購買時間：<span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+        
+        <table border="1" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>書本封面</th>
+                    <th>書名</th>
+                    <th>價格</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${order.items}">
+                    <td>
+                        <img th:src="@{'/uploads/' + ${item.coverImage}}" style="width: 50px; height: auto;">
+                    </td>
+                    <td th:text="${item.bookTitle}"></td>
+                    <td th:text="${item.price}"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>訂單總金額：<span th:text="${order.totalPrice}" style="color: red;"></span> 元</h4>
+    </div>
+</body>
+</html>
