@@ -40,10 +40,10 @@
     </a>
 
     <a href="/orders">
-    <button type="button"
-        style="padding: 10px 20px; font-size: 16px; background-color: #1890ff; color: white; border: none; cursor: pointer; margin-left: 10px;">
-        📦 查詢我的訂單
-    </button>
+        <button type="button"
+            style="padding: 10px 20px; font-size: 16px; background-color: #1890ff; color: white; border: none; cursor: pointer; margin-left: 10px;">
+            📦 查詢我的訂單
+        </button>
     </a>
 
     <br><br>
@@ -100,19 +100,28 @@
                 <td>
                     <form th:action="@{/cart/add}" method="post" style="display: inline;">
                         <input type="hidden" name="bookId" th:value="${book.id}">
-                        <button type="submit" style="background-color: #ff9800; color: white; border: none; padding: 3px 8px; cursor: pointer; border-radius: 3px;">🛒 加入購物車</button>
+                        <button type="submit"
+                            style="background-color: #ff9800; color: white; border: none; padding: 3px 8px; cursor: pointer; border-radius: 3px;">🛒
+                            加入購物車</button>
                     </form>
+
+                    <a th:href="@{/comments(courseName=${book.courseName}, professor=${book.professor})}"
+                        style="text-decoration: none; margin-left: 5px;">
+                        <button type="button"
+                            style="background-color: #17a2b8; color: white; border: none; padding: 3px 8px; cursor: pointer; border-radius: 3px;">💬
+                            課程評價</button>
+                    </a>
 
                     <form action="/editBook" method="get" style="display: inline;"
                         th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
                         <input type="hidden" name="id" th:value="${book.id}">
-                        <button type="submit">編輯修改</button>
+                        <button type="submit" style="margin-left: 5px;">編輯修改</button>
                     </form>
 
                     <form action="/deleteBook" method="post" style="display: inline;"
                         th:if="${#authorization.expression('isAuthenticated()') and #authentication.name == book.ownerUsername}">
                         <input type="hidden" name="id" th:value="${book.id}">
-                        <button type="submit" style="color: red;">下架刪除</button>
+                        <button type="submit" style="color: red; margin-left: 5px;">下架刪除</button>
                     </form>
                 </td>
             </tr>

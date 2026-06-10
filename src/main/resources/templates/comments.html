@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>校園二手書 - 課程與教授評價</title>
+</head>
+
+<body style="padding: 20px; font-family: sans-serif;">
+
+    <a href="/"><button type="button" style="padding: 5px 15px; cursor: pointer;">⬅️ 返回首頁</button></a>
+    <br><br>
+
+    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; border-left: 5px solid #17a2b8;">
+        <h2>📚 課程名稱：<span th:text="${courseName}" style="color: #1890ff;">物件導向程式設計</span></h2>
+        <h3>👨‍🏫 指導教授：<span th:text="${professor}" style="color: #52c41a;">張教授</span></h3>
+    </div>
+
+    <hr>
+
+    <h3>💬 學生評價清單</h3>
+    <div th:if="${#lists.isEmpty(comments)}">
+        <p style="color: gray; font-style: italic;">目前這門課還沒有任何同學留下評價，歡迎當第一個敲碗的人！</p>
+    </div>
+
+    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;"
+        th:if="${not #lists.isEmpty(comments)}">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th style="width: 15%;">評價同學</th>
+                <th style="width: 65%;">評價心得</th>
+                <th style="width: 20%;">發表時間</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="comment : ${comments}">
+                <td th:text="${comment.username}" style="font-weight: bold; color: #555;">學生帳號</td>
+                <td th:text="${comment.content}" style="white-space: pre-line;">評價內容</td>
+                <td th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2026-06-10 12:00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br><br>
+    <hr>
+
+    <h3>✍️ 我要留下對這門課/教授的評價</h3>
+
+    <div sec:authorize="isAnonymous()"
+        style="background-color: #fff2e6; padding: 10px; border-radius: 4px; color: #ff851b;">
+        <p>⚠️ 您目前是訪客狀態，請先去 <a href="/login-page" style="font-weight: bold;">會員登入</a> 才能發表課程評價喔！</p>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        <form action="/comments/add" method="post">
+            <input type="hidden" name="courseName" th:value="${courseName}">
+            <input type="hidden" name="professor" th:value="${professor}">
+
+            <textarea name="content" rows="5" style="width: 50%; padding: 10px; font-size: 14px; border-radius: 4px;"
+                placeholder="例如：這堂課期末考題都從這本書出！/ 教授上課速度稍快，建議買書自己看..." required></textarea>
+            <br><br>
+            <button type="submit"
+                style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 4px;">
+                🚀 送出我的課程評價
+            </button>
+        </form>
+    </div>
+
+</body>
+
+</html>
